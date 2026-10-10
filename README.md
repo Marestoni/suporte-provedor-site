@@ -1,5 +1,7 @@
 # Suporte Provedor — Site
 
+[![CI](https://github.com/Marestoni/suporte-provedor-site/actions/workflows/ci.yml/badge.svg)](https://github.com/Marestoni/suporte-provedor-site/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Front-end (Next.js + React + TypeScript) do **chat de suporte com IA para provedores de internet pequenos**. O cliente
 recebe o link por resposta automática no WhatsApp, abre este site, se identifica e conversa com um agente que consulta
 fatura, conexão e abre chamado de visita técnica.
