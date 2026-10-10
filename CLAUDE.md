@@ -79,8 +79,8 @@ histórico das revisões estão no CLAUDE.md da API (`SuporteProvedorApi`); este
 2. **`/code-review high`** em loop até restarem só achados de baixa severidade (estados de erro do chat: 401/409/429/503/rede).
 3. **`/simplify`** nas mudanças, depois de corrigir 1 e 2.
 4. **`/run`** — API + site no ar e o fluxo real no navegador (identificação, chat, cliente bloqueado, erro de rede, mobile).
-5. **`npm run lint` e `npm run build`** sem erros; `NEXT_PUBLIC_API_URL` apontando para a API do ambiente de destino.
-6. **Segredos:** `git diff --cached` sem chaves/senhas; `.env.local` nunca entra (só `.env.example`).
+5. **`npm run lint` e `npm run build`** sem erros (o CI repete isso a cada push; o selo no README precisa estar verde); `NEXT_PUBLIC_API_URL` apontando para a API do ambiente de destino.
+6. **Segredos:** `git diff --cached` sem chaves/senhas (o CI roda **gitleaks** em todo o histórico a cada push); `.env.local` nunca entra (só `.env.example`).
 7. A API do destino já deve estar publicada com as migrations aplicadas e o CORS liberando a origem deste site.
 
 ## Roadmap
