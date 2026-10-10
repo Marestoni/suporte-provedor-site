@@ -41,3 +41,7 @@ Clientes de teste (CPF / nascimento) estão no README da API.
 npm run lint
 npm run build
 ```
+
+## Licença
+
+[MIT](LICENSE) © 2026 André Marestoni
