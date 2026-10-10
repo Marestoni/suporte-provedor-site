@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Suporte Provedor — Site
 
-## Getting Started
+Front-end (Next.js + React + TypeScript) do **chat de suporte com IA para provedores de internet pequenos**. O cliente
+recebe o link por resposta automática no WhatsApp, abre este site, se identifica e conversa com um agente que consulta
+fatura, conexão e abre chamado de visita técnica.
 
-First, run the development server:
+> Projeto de portfólio, com dados fictícios. API: [suporte-provedor-api](https://github.com/Marestoni/suporte-provedor-api)
+> (.NET 10 + PostgreSQL), onde ficam o agente, as ferramentas e as regras de negócio.
+
+## Telas
+
+| Rota | Função |
+|---|---|
+| `/` | boas-vindas e botão "Iniciar atendimento" (destino do link do WhatsApp) |
+| `/chat` | identificação (CPF + data de nascimento) e conversa com o agente |
+| `/bloqueado` | aviso para cliente suspenso por inadimplência, com acesso ao chat |
+
+## Decisões
+
+- **Mobile-first e leve:** o público chega pelo celular, muitas vezes no 4G. Sem bibliotecas de UI/estado; `useState` basta.
+- **Autossuficiente (walled garden):** sem CDN, fontes ou scripts de terceiros. O cliente bloqueado por inadimplência só
+  alcança o domínio do chat, então o site precisa funcionar sozinho.
+- **Sem segredos no navegador:** o site não chama o modelo de IA nem o banco; tudo passa pela API.
+- **Token só em memória:** o token de sessão vive no estado do React, nunca em `localStorage` ou na URL.
+- **Texto do agente sempre como texto** (sem `dangerouslySetInnerHTML`); códigos PIX longos ganham botão "Copiar".
+- **Acessível:** foco visível, labels, `aria-live` na conversa, tema claro/escuro automático.
+
+## Como rodar
+
+Requisitos: Node 20+ e a API rodando (padrão `http://localhost:5180`).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env.local     # NEXT_PUBLIC_API_URL
+npm install
+npm run dev                    # http://localhost:3000/chat
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Clientes de teste (CPF / nascimento) estão no README da API.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run lint
+npm run build
+```
