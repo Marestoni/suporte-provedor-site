@@ -46,7 +46,13 @@ export function Chat({ conversaId, token, nome, situacao }: Props) {
       if (r.status !== "aberta") setEncerrada(true);
     } catch (e) {
       setErro(e instanceof ApiError ? e.message : "Algo deu errado. Tente novamente.");
-      if (e instanceof ApiError && e.status === 409) setEncerrada(true);
+      if (e instanceof ApiError && e.status === 409) {
+        setEncerrada(true);
+      } else {
+        // Não foi processada: tira o balão otimista e devolve o texto ao campo para reenviar sem redigitar.
+        setMensagens((m) => m.slice(0, -1));
+        setTexto(t);
+      }
     } finally {
       setEnviando(false);
     }

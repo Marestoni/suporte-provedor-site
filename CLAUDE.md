@@ -70,6 +70,19 @@ npm run build
 npm run lint
 ```
 
+## Checklist ANTES DE QUALQUER DEPLOY (obrigatório)
+Nenhum deploy sem passar por todos os itens, nesta ordem (registrar o resultado no PR/commit). O checklist completo e o
+histórico das revisões estão no CLAUDE.md da API (`SuporteProvedorApi`); este é o resumo para o site.
+
+1. **`/security-review`** — XSS (nada de `dangerouslySetInnerHTML`), token só em memória, nada sensível em URL/log/storage,
+   nenhuma chave no bundle (`NEXT_PUBLIC_*` só com valores públicos), site autossuficiente (sem CDN/fonte/script de terceiros).
+2. **`/code-review high`** em loop até restarem só achados de baixa severidade (estados de erro do chat: 401/409/429/503/rede).
+3. **`/simplify`** nas mudanças, depois de corrigir 1 e 2.
+4. **`/run`** — API + site no ar e o fluxo real no navegador (identificação, chat, cliente bloqueado, erro de rede, mobile).
+5. **`npm run lint` e `npm run build`** sem erros; `NEXT_PUBLIC_API_URL` apontando para a API do ambiente de destino.
+6. **Segredos:** `git diff --cached` sem chaves/senhas; `.env.local` nunca entra (só `.env.example`).
+7. A API do destino já deve estar publicada com as migrations aplicadas e o CORS liberando a origem deste site.
+
 ## Roadmap
 1. ~~Esqueleto Next + páginas `/`, `/chat`, `/bloqueado`.~~ feito
 2. ~~Chat funcional contra a API (identificação + mensagens).~~ feito

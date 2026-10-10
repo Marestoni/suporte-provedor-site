@@ -1,6 +1,6 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5180";
 
-export type Situacao = "ativo" | "bloqueado_inadimplencia" | "suspenso" | "cancelado";
+export type Situacao = "ativo" | "bloqueado_inadimplencia" | "liberado_em_confianca" | "suspenso" | "cancelado";
 
 export interface Identificado {
   token: string;
@@ -38,8 +38,9 @@ async function request<T>(path: string, init: RequestInit & { token?: string } =
     throw new ApiError(0, "Sem conexão com o atendimento. Verifique sua internet e tente de novo.");
   }
   if (!res.ok) {
-    const corpo = (await res.json().catch(() => null)) as { erro?: string } | null;
-    throw new ApiError(res.status, corpo?.erro ?? "Algo deu errado. Tente novamente.");
+    // A API devolve erros em ProblemDetails (RFC 7807); a mensagem ao cliente vai em "detail".
+    const corpo = (await res.json().catch(() => null)) as { detail?: string } | null;
+    throw new ApiError(res.status, corpo?.detail ?? "Algo deu errado. Tente novamente.");
   }
   return (await res.json()) as T;
 }
